@@ -15,4 +15,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home.index');
+
+Route::get('/contact', function () {
+    return 'contact';
+})->name('home.contact');
+
+Route::get('/posts/{id}', function ($id) {
+    return 'Blog post ' . $id;
+})
+//->where(['id'=>'[0-9]+'])
+->name('posts.show');
+
+Route::get('/recent-posts/{days_ago?}', function ($daysAgo = 20) {
+    return 'Here are the posts from ' . $daysAgo . ' days ago';
+})->name('posts.recent.index');
