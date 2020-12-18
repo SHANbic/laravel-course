@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,8 +33,10 @@ $posts = [
 ];
 
 Route::get('/posts', function() use ($posts) {
+    //dd(request()->all());
+    dd((int)request()->query('page', 1));
     return view('posts.index', ['posts' => $posts]);
-})->name('posts.index');
+})->name('posts.index')->middleware('auth');
 
 Route::get('/posts/{id}', function ($id) use ($posts) {
     abort_if(!isset($posts[$id]), 404);
@@ -45,3 +48,35 @@ Route::get('/posts/{id}', function ($id) use ($posts) {
 Route::get('/recent-posts/{days_ago?}', function ($daysAgo = 20) {
     return 'Here are the posts from ' . $daysAgo . ' days ago';
 })->name('posts.recent.index');
+
+Route::prefix('/fun')->name('fun.')->group(function() use ($posts){
+    Route::get('/responses', function() use ($posts) {
+        return response($posts, 201)
+        ->header('Content-Type', 'application/json')
+        ->cookie('MY_COOKIE', 'PIERRE', 360);
+    })->name('responses');
+    
+    Route::get('/redirect', function() {
+        return redirect('/contact');
+    })->name('redirect');
+    
+    Route::get('/back', function() {
+        return back();
+    })->name('back');
+    
+    Route::get('/named-route', function() {
+        return redirect()->route('posts.show', ['id'=>1]);
+    })->name('named-route');
+    
+    Route::get('/away', function() {
+        return redirect()->away('https://lovedev.fr');
+    })->name('away');
+    
+    Route::get('/json', function() use ($posts) {
+        return response()->json($posts);
+    })->name('json');
+    
+    Route::get('/download', function() {
+        return response()->download(public_path('/test.gif'));
+    })->name('download');
+});
