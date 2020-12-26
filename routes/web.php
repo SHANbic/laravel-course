@@ -23,7 +23,7 @@ Route::get('/contact', 'HomeController@contact')->name('home.contact');
 
 Route::get('/single', 'About');
 
-Route::resource('posts', ' PostsController')->only(['index', 'show']);
+Route::resource('posts', 'PostsController');
 
 /* Route::get('/posts', function () use ($posts) {
     //dd(request()->all());
