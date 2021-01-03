@@ -3,6 +3,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,13 +18,17 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', 'HomeController@home')->name('home.index');
+Route::get('/', 'HomeController@home')
+    ->name('home.index');
+    //->middleware('auth');
 
 Route::get('/contact', 'HomeController@contact')->name('home.contact');
 
-Route::get('/single', 'About');
+// Route::get('/single', 'About');
 
 Route::resource('posts', 'PostsController');
+
+Auth::routes();
 
 /* Route::get('/posts', function () use ($posts) {
     //dd(request()->all());
