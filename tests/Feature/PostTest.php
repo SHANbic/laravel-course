@@ -101,10 +101,7 @@ class PostTest extends TestCase
             ->assertSessionHas('status');
 
         $this->assertEquals(session('status'), 'Blog Post was updated !');
-        $this->assertDatabaseMissing('blog_posts', [
-            'title' => 'new blog post',
-            'content' => "testing blog post"
-        ]);
+        $this->assertDatabaseMissing('blog_posts', $post->toArray());
         $this->assertDatabaseHas('blog_posts', [
             'title' => 'brand new title',
             'content' => "some new content"
@@ -115,9 +112,7 @@ class PostTest extends TestCase
     {
         $post = $this->createDummyBlogPost();
 
-        $this->assertDatabaseHas('blog_posts', [
-            'title' => 'new blog post'
-        ]);
+        $this->assertDatabaseHas('blog_posts', ['title' => 'new blog post']);
 
         $this->actingAs($this->user())
             ->delete("/posts/{$post->id}")
@@ -125,10 +120,8 @@ class PostTest extends TestCase
             ->assertSessionHas('status');
 
         $this->assertEquals(session('status'), 'Blog Post was deleted !');
-        $this->assertDatabaseMissing('blog_posts', [
-            'title' => 'new blog post',
-            'content' => "testing blog post"
-        ]);
+        $this->assertDatabaseMissing('blog_posts', $post->toArray());
+        $this->assertSoftDeleted('blog_posts', ['title' => 'new blog post']);
     }
 
     private function createDummyBlogPost(): BlogPost
