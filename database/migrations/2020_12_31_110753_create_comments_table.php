@@ -14,10 +14,15 @@ class CreateCommentsTable extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->timestamps();
 
-            $table->text('content');
+
+            if (env('DB_CONNECTION') === 'sqlite_testing') {
+                $table->text('content')->default('');
+            } else {
+                $table->text('content');
+            }
 
             $table->foreignId('blog_post_id')->constrained();
         });

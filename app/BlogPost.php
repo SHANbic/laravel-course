@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BlogPost extends Model
 {
+    // protected $table = 'blogPosts';
+
     use SoftDeletes;
 
     protected $fillable = ['title', 'content'];
@@ -16,16 +18,20 @@ class BlogPost extends Model
         return $this->hasMany('App\Comment');
     }
 
-    // other way to delete other table content on cascade
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+    
     public static function boot()
     {
         parent::boot();
 
-        static::deleting(function (BlogPost $blogPost){
+        static::deleting(function (BlogPost $blogPost) {
             $blogPost->comments()->delete();
         });
 
-        static::restoring(function (BlogPost $blogPost){
+        static::restoring(function (BlogPost $blogPost) {
             $blogPost->comments()->restore();
         });
     }

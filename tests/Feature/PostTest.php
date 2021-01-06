@@ -42,7 +42,7 @@ class PostTest extends TestCase
     {
         $post = $this->createDummyBlogPost();
         factory(Comment::class, 4)->create([
-            'blog_post_id' => $post->id
+            'blogpost_id' => $post->id
         ]);
         $response = $this->get('/posts');
 
