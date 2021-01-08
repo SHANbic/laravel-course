@@ -18,9 +18,11 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', 'HomeController@home')
     ->name('home.index');
-    //->middleware('auth');
+//->middleware('auth');
 
 Route::get('/contact', 'HomeController@contact')->name('home.contact');
+
+Route::get('/secret', 'HomeController@secret')->name('home.secret')->middleware('can:home.secret');
 
 // Route::get('/single', 'About');
 

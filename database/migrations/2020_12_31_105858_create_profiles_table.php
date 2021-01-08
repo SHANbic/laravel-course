@@ -14,10 +14,11 @@ class CreateProfilesTable extends Migration
     public function up()
     {
         Schema::create('profiles', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->timestamps();
+            $table->unsignedInteger('author_id');
 
-            $table->foreignId('author_id')->constrained();
+            $table->foreign('author_id')->references('id')->on('authors');
         });
     }
 

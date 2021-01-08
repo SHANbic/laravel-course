@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\BlogPost;
 use App\Http\Requests\StorePost;
-use Illuminate\Http\Request;
 
 class PostsController extends Controller
 {
@@ -24,7 +23,8 @@ class PostsController extends Controller
 
         return view(
             'posts.index',
-            ['posts' => BlogPost::withCount('comments')->get()]);
+            ['posts' => BlogPost::withCount('comments')->get()]
+        );
     }
 
     /**
@@ -34,6 +34,7 @@ class PostsController extends Controller
      */
     public function create()
     {
+        // $this->authorize('posts.create');
         return view('posts.create');
     }
 
@@ -46,16 +47,8 @@ class PostsController extends Controller
     public function store(StorePost $request)
     {
         $validated = $request->validated();
+        $validated['user_id'] = $request->user()->id;
         $post = BlogPost::create($validated);
-        // $post = new BlogPost();
-        // $post->title = $validated['title'];
-        // $post->content = $validated['content'];
-
-        // $post->save();
-
-        //$post2 = BlogPost::make();
-        //$post2->save();
-
         $request->session()->flash('status', 'the blog post was created');
 
         return redirect()->route('posts.show', ['post' => $post->id]);
@@ -70,7 +63,8 @@ class PostsController extends Controller
     public function show($id)
     {
         return view('posts.show', [
-            'post' => BlogPost::with('comments')->findOrFail($id)]);
+            'post' => BlogPost::with('comments')->findOrFail($id)
+        ]);
     }
 
     /**
@@ -81,6 +75,14 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
+        $post = BlogPost::findOrFail($id);
+
+        /* if (Gate::denies('update-post', $post)) {
+            abort(403, "You can't edit this blogpost");
+        } */
+
+        $this->authorize($post);
+
         return view('posts.edit', ['post' => BlogPost::findOrFail($id)]);
     }
 
@@ -94,6 +96,13 @@ class PostsController extends Controller
     public function update(StorePost $request, $id)
     {
         $post = BlogPost::findOrFail($id);
+
+        /* if (Gate::denies('update-post', $post)) {
+            abort(403, "You can't edit this blogpost");
+        } */
+
+        $this->authorize($post);
+
         $validated = $request->validated();
         $post->fill($validated);
         $post->save();
@@ -111,6 +120,13 @@ class PostsController extends Controller
     public function destroy($id)
     {
         $post = BlogPost::findOrFail($id);
+
+        /* if (Gate::denies('delete-post', $post)) {
+            abort(403, "You can't delete this blogpost");
+        } */
+
+        $this->authorize($post);
+
         $post->delete();
         session()->flash('status', 'Blog Post was deleted !');
         return redirect()->route('posts.index');
