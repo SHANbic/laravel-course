@@ -12,7 +12,7 @@
   <h4>Comments</h4>
   @forelse($post->comments as $comment)
   <p class="mb-0 font-size-md">{{ $comment->content }}</p>
-  <p class="text-muted">added on {{ $comment->created_at->diffForHumans() }}</p>
+  <p class="text-muted">added {{ $comment->created_at->diffForHumans() }}</p>
   @empty
   <p>No comments yet !</p>
   @endforelse

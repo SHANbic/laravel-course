@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BlogPost;
 use App\Http\Requests\StorePost;
+use App\User;
 
 class PostsController extends Controller
 {
@@ -23,7 +24,12 @@ class PostsController extends Controller
 
         return view(
             'posts.index',
-            ['posts' => BlogPost::withCount('comments')->get()]
+            [
+                'posts' => BlogPost::latest()->withCount('comments')->get(),
+                'most_commented' => BlogPost::mostCommented()->take(5)->get(),
+                'most_active' => User::withMostBlogPosts()->take(5)->get(),
+                'most_active_last_month' => User::withMostBlogPostsLastMonth()->take(5)->get()
+            ]
         );
     }
 
@@ -62,6 +68,12 @@ class PostsController extends Controller
      */
     public function show($id)
     {
+        /* return view('posts.show', [
+            'post' => BlogPost::with(['comments' => function ($query) {
+                return $query->latest();
+            }])->findOrFail($id)
+        ]); */
+
         return view('posts.show', [
             'post' => BlogPost::with('comments')->findOrFail($id)
         ]);

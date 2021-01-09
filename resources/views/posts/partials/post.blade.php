@@ -1,6 +1,15 @@
 {{-- @break($key === 2) --}}
 {{-- @continue($key === 1) --}}
-<h3><a href="{{ route('posts.show', ['post' => $post->id]) }}" class="btn-btn-primary">{{ $post->title }}</a></h3>
+
+<h3>
+  @if($post->trashed())
+  <del>
+    @endif
+    <a class="{{ $post->trashed() ? 'text-muted' : '' }}" href="{{ route('posts.show', ['post' => $post->id]) }}" class="btn-btn-primary">{{ $post->title }}</a>
+    @if($post->trashed())
+  </del>
+  @endif
+</h3>
 <p class="text-muted">
   added on {{ $post->created_at->diffForHumans() }}
   by {{ $post->user['name'] }}
@@ -17,6 +26,7 @@
     <input type="submit" value="Edit" class="btn btn-primary">
   </form>
   @endcan
+  @if(!$post->trashed())
   @can('delete', $post)
   <form class="d-inline" action="{{ route('posts.destroy', ['post' => $post->id]) }}" method='POST'>
     @csrf
@@ -24,5 +34,6 @@
     <input type="submit" value="Delete" class="btn btn-danger">
   </form>
   @endcan
+  @endif
 
 </div>
