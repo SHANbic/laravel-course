@@ -9,14 +9,14 @@ class HomeController extends Controller
 {
     public function home() {
         // dd(Auth::check()); checks if a user is authenticated
-        return view('home.index');
+        return view('home');
     }
 
     public function contact() {
-        return view('home.contact');
+        return view('contact');
     }
 
     public function secret() {
-        return view('home.secret');
+        return view('secret');
     }
 }

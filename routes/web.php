@@ -17,12 +17,12 @@ use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', 'HomeController@home')
-    ->name('home.index');
+    ->name('index');
 //->middleware('auth');
 
-Route::get('/contact', 'HomeController@contact')->name('home.contact');
+Route::get('/contact', 'HomeController@contact')->name('contact');
 
-Route::get('/secret', 'HomeController@secret')->name('home.secret')->middleware('can:home.secret');
+Route::get('/secret', 'HomeController@secret')->name('secret')->middleware('can:secret');
 
 // Route::get('/single', 'About');
 
