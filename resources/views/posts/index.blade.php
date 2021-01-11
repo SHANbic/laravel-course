@@ -26,12 +26,15 @@
     <p>No comments yet !</p>
     @endif()
     <div class="mb-5">
+      @auth
       @can('update', $post)
       <form class="d-inline" action="{{ route('posts.edit', ['post' => $post->id]) }}" method='GET'>
         @csrf
         <input type="submit" value="Edit" class="btn btn-primary">
       </form>
       @endcan
+      @endauth
+      @auth
       @if(!$post->trashed())
       @can('delete', $post)
       <form class="d-inline" action="{{ route('posts.destroy', ['post' => $post->id]) }}" method='POST'>
@@ -41,6 +44,7 @@
       </form>
       @endcan
       @endif
+      @endauth
 
     </div>
     @empty
