@@ -27,6 +27,7 @@ Route::get('/secret', 'HomeController@secret')->name('secret')->middleware('can:
 // Route::get('/single', 'About');
 
 Route::resource('posts', 'PostsController');
+Route::resource('posts.comments', 'PostCommentController')->only(['store']);
 Route::get('posts/tag/{tag}', 'PostTagController@index')->name('posts.tags.index');
 
 Auth::routes();

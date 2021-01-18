@@ -3,5 +3,5 @@
 @section('title', 'Home Page')
 
 @section('content')
-<h1>Hell of a World</h1>
+<h1>Blog App</h1>
 @endsection
