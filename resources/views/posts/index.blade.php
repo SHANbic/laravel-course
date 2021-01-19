@@ -18,7 +18,7 @@
       </del>
       @endif
     </h3>
-    @updated(['date' => $post->created_at, 'name' => $post->user->name])
+    @updated(['date' => $post->created_at, 'name' => $post->user->name, 'userId' => $post->user->id])
     @endupdated
 
     @tags(['tags' => $post->tags])@endtags
@@ -54,10 +54,10 @@
     <div>the list is empty</div>
     @endforelse
   </div>
-  
+
   <div class="col-4">
     @include('posts._activity')
   </div>
-  
+
 </div>
 @endsection
