@@ -26,7 +26,8 @@ class PostTest extends TestCase
     {
         $post = $this->createDummyBlogPost();
         factory(Comment::class, 4)->create([
-            'blog_post_id' => $post->id
+            'commentable_id' => $post->id,
+            'commentable_type' => "App\BlogPost"
         ]);
         $response = $this->get('/posts');
 

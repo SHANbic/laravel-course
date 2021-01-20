@@ -16,10 +16,10 @@ class CreateBlogPostTagTable extends Migration
         Schema::create('blog_post_tag', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->unsignedInteger('blog_post_id')->index();
+            $table->unsignedInteger('blog_post_id');
             $table->foreign('blog_post_id')->references('id')->on('blog_posts')->onDelete('cascade');
 
-            $table->unsignedInteger('tag_id')->index();
+            $table->unsignedInteger('tag_id');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
             $table->timestamps();
         });

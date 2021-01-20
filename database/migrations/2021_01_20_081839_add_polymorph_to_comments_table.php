@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUserToCommentsTable extends Migration
+class AddPolymorphToCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,13 +14,10 @@ class AddUserToCommentsTable extends Migration
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->unsignedInteger('user_id')->nullable();
+            $table->dropForeign(['blog_post_id']);
+            $table->dropColumn('blog_post_id');
 
-            if (env('DB_CONNECTION') === 'mysql_testing') {
-                $table->foreign('user_id')->references('id')->on('users')->default(0);
-            } else {
-                $table->foreign('user_id')->references('id')->on('users');
-            }
+            $table->morphs('commentable');
         });
     }
 
@@ -32,8 +29,10 @@ class AddUserToCommentsTable extends Migration
     public function down()
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
+            //$table->dropMorphs('commentable');
+
+            // $table->unsignedInteger('blog_post_id')->default(0);
+            // $table->foreign('blog_post_id')->references('id')->on('bloposts');
         });
     }
 }

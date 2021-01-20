@@ -14,11 +14,9 @@ class Comment extends Model
 
     protected $fillable = ['user_id', 'content'];
 
-    public function blogPost()
+    public function commentable()
     {
-        // return $this->belongsTo('App\BlogPost', 'post_id', 'blogpost_id');
-        // 2nd argument is optional other name for foreign key, 3rd argument is optional other name for primary key
-        return $this->belongsTo('App\BlogPost');
+        return $this->morphTo('App\BlogPost');
     }
 
     public function user()
@@ -37,7 +35,8 @@ class Comment extends Model
 
         // static::addGlobalScope(new LatestScope);
         static::creating(function (Comment $comment) {
-            Cache::tags(['blog-post'])->forget("blog-post-{$comment->blog_post_id}");
+            if($comment->commentable_type === BlogPost::class)
+            Cache::tags(['blog-post'])->forget("blog-post-{$comment->commentable_id}");
             Cache::tags(['blog-post'])->forget("mostCommented");
         });
     }

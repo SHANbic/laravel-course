@@ -15,7 +15,7 @@ class HomeTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertSeeText('Hell of a World');
+        $response->assertSeeText('Blog App');
     }
 
     public function testContactPageIsDisplayingText()

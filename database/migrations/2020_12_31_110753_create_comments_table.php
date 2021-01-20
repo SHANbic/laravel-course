@@ -18,7 +18,7 @@ class CreateCommentsTable extends Migration
             $table->timestamps();
 
 
-            if (env('DB_CONNECTION') === 'sqlite_testing') {
+            if (env('DB_CONNECTION') === 'mysql_testing') {
                 $table->text('content')->default('');
             } else {
                 $table->text('content');
