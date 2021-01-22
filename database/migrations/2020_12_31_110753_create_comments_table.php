@@ -24,7 +24,7 @@ class CreateCommentsTable extends Migration
                 $table->text('content');
             }
 
-            $table->unsignedInteger('blog_post_id');
+            $table->unsignedInteger('blog_post_id')->nullable();
             $table->foreign('blog_post_id')->references('id')->on('blog_posts');
         });
     }
