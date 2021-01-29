@@ -11,8 +11,6 @@ use App\Traits\Taggable;
 
 class BlogPost extends Model
 {
-    // protected $table = 'blogPosts';
-
     use SoftDeletes, Taggable;
 
     protected $fillable = ['title', 'content', 'user_id'];
@@ -52,18 +50,5 @@ class BlogPost extends Model
     {
         static::addGlobalScope(new DeletedAdminScope);
         parent::boot();
-
-        static::updating(function (BlogPost $blogPost) {
-            Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
-        });
-
-        static::deleting(function (BlogPost $blogPost) {
-            $blogPost->comments()->delete();
-            Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
-        });
-
-        static::restoring(function (BlogPost $blogPost) {
-            $blogPost->comments()->restore();
-        });
     }
 }

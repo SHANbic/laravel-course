@@ -1,9 +1,9 @@
 @component('mail::message')
-# Comment was posted on your post you are watching
+# Comment was posted on a blog post you are watching
 
 Hi {{ $user->name }}
 
-Someone has commented on your blog post
+See what people think about subject that matters to you
 
 @component('mail::button', ['url' => route('posts.show', ['post' => $comment->commentable->id]) ])
 View the blog post

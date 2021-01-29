@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BlogPost;
+use App\Events\BlogPostPosted;
 use App\Http\Requests\StorePost;
 use App\Image;
 use Illuminate\Support\Facades\Cache;
@@ -59,6 +60,8 @@ class PostsController extends Controller
             $path = $request->file('thumbnail')->store('thumbnails');
             $post->image()->save(Image::make(['path' => $path]));
         }
+
+        event(new BlogPostPosted($post));
 
         $request->session()->flash('status', 'the blog post was created');
 
