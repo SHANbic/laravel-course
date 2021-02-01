@@ -85,8 +85,11 @@ class UserController extends Controller
                 $user->image()->save(Image::make(['path' => $path]));
             }
         }
+        
+        $user->locale = $request->get('locale');
+        $user->save();
 
-        return redirect()->back()->withStatus('Profile image was updated! ');
+        return redirect()->back()->withStatus('Profile was updated! ');
     }
 
     /**

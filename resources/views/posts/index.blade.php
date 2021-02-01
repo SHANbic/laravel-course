@@ -23,11 +23,8 @@
 
     @tags(['tags' => $post->tags])@endtags
 
-    @if($post->comments_count)
-    <p>{{ $post->comments_count }} comments</p>
-    @else
-    <p>No comments yet !</p>
-    @endif()
+    {{ trans_choice('messages.comments', $post->comments_count) }}
+
     <div class="mb-5">
       @auth
       @can('update', $post)
