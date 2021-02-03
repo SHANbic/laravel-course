@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\CounterFacade;
 use App\Http\Requests\UpdateUser;
 use App\Image;
 use App\User;
@@ -53,7 +54,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show', ['user' => $user]);
+        return view('users.show', ['user' => $user, "counter" => CounterFacade::increment("user-{$user->id}")]);
     }
 
     /**
@@ -85,7 +86,7 @@ class UserController extends Controller
                 $user->image()->save(Image::make(['path' => $path]));
             }
         }
-        
+
         $user->locale = $request->get('locale');
         $user->save();
 

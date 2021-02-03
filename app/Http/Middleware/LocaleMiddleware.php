@@ -19,7 +19,6 @@ class LocaleMiddleware
     public function handle($request, Closure $next)
     {
         $locale = null;
-
         if (Auth::check() && !Session::has('locale')) {
             $locale = $request->user()->locale;
             Session::put('locale', $locale);
@@ -29,14 +28,14 @@ class LocaleMiddleware
             $locale = $request->get('locale');
             Session::put('locale', $locale);
         }
-
         $locale = Session::get('locale');
-
+        
         if (null === $locale) {
             $locale = config('app.fallback_locale');
         }
-
+        
         App::setLocale($locale);
+
 
         return $next($request);
     }
