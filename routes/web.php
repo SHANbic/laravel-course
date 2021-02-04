@@ -27,7 +27,7 @@ Route::get('/secret', 'HomeController@secret')->name('secret')->middleware('can:
 // Route::get('/single', 'About');
 
 Route::resource('posts', 'PostsController');
-Route::resource('posts.comments', 'PostCommentController')->only(['store']);
+Route::resource('posts.comments', 'PostCommentController')->only(['index', 'store']);
 Route::resource('users.comments', 'UserCommentController')->only(['store']);
 Route::resource('users', 'UserController')->only(['show', 'edit', 'update']);
 Route::get('posts/tag/{tag}', 'PostTagController@index')->name('posts.tags.index');
