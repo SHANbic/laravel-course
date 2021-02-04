@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\BlogPost;
 use App\Events\CommentPosted;
 use App\Http\Requests\StoreComment;
+use App\Http\Resources\Comment as CommentResource;
 
 class PostCommentController extends Controller
 {
@@ -15,6 +16,7 @@ class PostCommentController extends Controller
 
     public function index(BlogPost $post)
     {
+        return CommentResource::collection($post->comments()->with('user')->get());
         return $post->comments()->with('user')->get();
     }
 
@@ -25,7 +27,7 @@ class PostCommentController extends Controller
             'user_id' => $request->user()->id
         ]);
 
-        // Mail::to($post->user)->send(new CommentPostedMarkdown($comment));
+        // Mail::to($post->user)->send(new CommentPostedMarkdown($comment));P
         // Mail::to($post->user)->queue(new CommentPostedMarkdown($comment));
 
         event(new CommentPosted($comment));
